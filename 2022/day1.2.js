@@ -3,10 +3,15 @@
 Each line = # of calories per item
 Elves' items separated by blank
 
+Example run:
+
+kevin@SURFACEPRO7:~/dev/advent-of-code/2022$ (main) node day1.2 < ../../advent-of-code-inputs/2022/day1.input.txt
+209691
+
 //*/
 
 const fs = require('fs'), rl = require('readline')
-const reader = rl.createInterface({ input: fs.createReadStream('day1.input.txt') })
+const reader = rl.createInterface({ input: process.stdin, output: process.stdout, terminal: false }) 
 
 let i = 0, c = 0, tops = [0, 0, 0]
 
