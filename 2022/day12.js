@@ -14,8 +14,8 @@ const debug = process.env.debug === '1' ? console.log : () => {}
 const fs = require('fs'), rl = require('readline')
 const reader = rl.createInterface({ input: process.stdin, output: process.stdout, terminal: false }) 
 
-let charToElevation = {}, maxClimb = 1, minX = 0, minY = 0, maxX = 0, maxY = 0, stepsToGoal = 999999
-const NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3, MAXSTEPS = 10000, START = 'S', GOAL = 'E', CODE_OFFSET = 33, SEPARATOR = ' '
+let charToElevation = {}, maxClimb = 1, minX = 0, minY = 0, maxX = 0, maxY = 0, stepsToGoal = 9999999
+const NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3, MAXLOOPS = 1000000000, START = 'S', GOAL = 'E', CODE_OFFSET = 33, SEPARATOR = ' '
 
 // Initialize priority map
 for (let x = 97; x < 123; x++) {
@@ -70,10 +70,12 @@ let step = (path, x, y, from) => {
 
     path += pointCode
 
-    if (++i > MAXSTEPS) {
+    ///
+    if (++i > MAXLOOPS) {
         debug('Aborting...')
         return
     }
+    //*/
 
     // Try north
     if (from !== NORTH && y > minY && charToElevation[map[y-1][x]] <= maxStep) step(path, x, (y - 1), SOUTH)
@@ -86,7 +88,7 @@ let step = (path, x, y, from) => {
 }
 
 reader.on('line', (line) => { 
-    map[i++] = line
+    map.push(line)
 })
 
 reader.on('close', () => {
@@ -94,12 +96,19 @@ reader.on('close', () => {
     
     maxY = map.length - 1
     maxX = map[0].length - 1
+    const MAX_STEPS_TO_GOAL = (maxX + 1) * (maxY + 1)
+    stepsToGoal = MAX_STEPS_TO_GOAL
     
     // Do logic now... 
     step(path, x, y)
     
-    debug('Total iterations: %i', i)
-    console.log(stepsToGoal)
+    console.log('Total iterations: %i', i)
+
+    if (stepsToGoal === MAX_STEPS_TO_GOAL) {
+        console.log('No solution found, MAX_STEPS_TO_GOAL: %i', MAX_STEPS_TO_GOAL)
+    } else {
+        console.log(stepsToGoal)
+    }
 })
 
 
