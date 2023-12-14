@@ -3,8 +3,14 @@
 
 Example run:
 
-kgwynn@CHGGZRQBK3:~/dev/advent-of-code/2023$ (main) php day8.php < ../../advent-of-code-inputs/2023/day8.input.txt
+kgwynn@CHGGZRQBK3:~/dev/advent-of-code/2023$ (main) time php day8.php < ../../advent-of-code-inputs/2023/day8.input.txt
 
+Steps: 12599
+
+
+real    0m0.076s
+user    0m0.029s
+sys     0m0.048s
 //*/
 
 function debug($out) { echo $out; }
